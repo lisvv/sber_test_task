@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "sber_test_task"
+version = "0.1.0"
+description = ""
+authors = ["lisvv <81390205+lisvv@users.noreply.github.com>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+Flask = "^2.1.2"
+Flask-SQLAlchemy = "^2.5.1"
+Flask-Admin = "^1.6.0"
+python-dotenv = "^0.20.0"
+psycopg2 = "^2.9.3"
+Flask-Script = "^2.0.6"
+Flask-Migrate = "^3.1.0"
+Flask-BabelEx = "^0.9.4"
+python-dateutil = "^2.8.2"
+flask-whooshee = "^0.8.2"
+MarkupSafe = "^2.1.1"
+Pillow = "^9.1.1"
+black = "^22.3.0"
+isort = "^5.10.1"
+
+[tool.poetry.dev-dependencies]
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"

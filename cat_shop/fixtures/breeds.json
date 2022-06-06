@@ -1,0 +1,44 @@
+[
+  {
+    "model": "Breed",
+    "fields": {
+      "id": 1,
+      "name": "Сиамская"
+    }
+  },
+    {
+    "model": "Breed",
+    "fields": {
+      "id": 2,
+      "name": "Британская"
+    }
+  },
+    {
+    "model": "Breed",
+    "fields": {
+      "id": 3,
+      "name": "Сибирская маскарадная"
+    }
+  },
+    {
+    "model": "Breed",
+    "fields": {
+      "id": 4,
+      "name": "Русская голубая"
+    }
+  },
+    {
+    "model": "Breed",
+    "fields": {
+      "id": 5,
+      "name": "Майкун"
+    }
+  },
+    {
+    "model": "Breed",
+    "fields": {
+      "id": 6,
+      "name": "Шотладнская"
+    }
+  }
+]

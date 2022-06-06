@@ -1,0 +1,101 @@
+[
+  {
+  "model": "Kitty",
+  "fields": {
+    "id": 1,
+    "breed_id": 1,
+    "name": "Мурзик",
+    "description": "Ласковый мурзик",
+    "image": "mursic.jpg",
+    "birthday": "2022-06-01"
+  }
+  },
+    {
+  "model": "Kitty",
+  "fields": {
+    "id": 2,
+    "breed_id": 2,
+    "name": "Дастик",
+    "description": "Мой кот",
+    "image": "mursic.jpg",
+    "birthday": "2022-04-02"
+  }
+  },
+    {
+  "model": "Kitty",
+  "fields": {
+    "id": 3,
+    "breed_id": 3,
+    "name": "Бобик",
+    "description": "Игривый кот",
+    "image": "mursic.jpg",
+    "birthday": "2022-03-02"
+  }
+  },
+    {
+  "model": "Kitty",
+  "fields": {
+    "id": 4,
+    "breed_id": 3,
+    "name": "Венера",
+    "description": "Замурлыкивает",
+    "image": "mursic.jpg",
+    "birthday": "2022-02-02"
+  }
+  },
+    {
+  "model": "Kitty",
+  "fields": {
+    "id": 5,
+    "breed_id": 4,
+    "name": "Мякиш",
+    "description": "Мягкий шарик",
+    "image": "mursic.jpg",
+    "birthday": "2021-05-07"
+  }
+  },
+  {
+    "model": "Kitty",
+    "fields": {
+      "id": 6,
+      "breed_id": 4,
+      "name": "Лизун",
+      "description": "",
+      "image": "mursic.jpg",
+      "birthday": "2021-05-01"
+    }
+  },
+    {
+  "model": "Kitty",
+  "fields": {
+    "id": 7,
+    "breed_id": 5,
+    "name": "Добряк",
+    "description": "Рыжий добрый кот",
+    "image": "mursic.jpg",
+    "birthday": "2021-04-04"
+  }
+  },
+    {
+  "model": "Kitty",
+  "fields": {
+    "id": 8,
+    "breed_id": 5,
+    "name": "Кузя",
+    "description": "Ласковый мурзик",
+    "image": "mursic.jpg",
+    "birthday": "2021-03-04"
+  }
+  },
+    {
+  "model": "Kitty",
+  "fields": {
+    "id": 9,
+    "breed_id": 6,
+    "name": "Матроскин",
+    "description": "Ласковый мурзик",
+    "image": "mursic.jpg",
+    "birthday": "2021-01-04"
+  }
+  }
+]
