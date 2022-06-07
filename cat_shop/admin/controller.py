@@ -13,7 +13,6 @@ from core.normalizer import get_normalized_month
 babel = Babel()
 admin = Admin()
 
-
 class BreedView(sqla.ModelView):
     column_list = ('name', )
 

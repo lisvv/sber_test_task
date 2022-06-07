@@ -20,6 +20,9 @@ MarkupSafe = "^2.1.1"
 Pillow = "^9.1.1"
 black = "^22.3.0"
 isort = "^5.10.1"
+flask-restx = "^0.5.1"
+flask-marshmallow = "^0.14.0"
+marshmallow-sqlalchemy = "^0.28.0"
 
 [tool.poetry.dev-dependencies]
 

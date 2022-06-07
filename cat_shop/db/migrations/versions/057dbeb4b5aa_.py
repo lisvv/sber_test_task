@@ -51,11 +51,11 @@ def upgrade():
     op.create_table(
         "kitties",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("breed_id", sa.Integer(), nullable=True),
-        sa.Column("name", sa.String(length=100), nullable=True),
-        sa.Column("description", sa.String(length=1000), nullable=True),
-        sa.Column("image", sa.String(length=100), nullable=True),
-        sa.Column("birthday", sa.DateTime(), nullable=True),
+        sa.Column("breed_id", sa.Integer(), nullable=False),
+        sa.Column("name", sa.String(length=100), nullable=False),
+        sa.Column("description", sa.String(length=1000), nullable=False),
+        sa.Column("image", sa.String(length=100), nullable=False),
+        sa.Column("birthday", sa.Date(), nullable=False),
         sa.Column(
             "__ts_vector__",
             TSVector(),

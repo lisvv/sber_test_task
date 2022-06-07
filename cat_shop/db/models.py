@@ -1,28 +1,45 @@
-
-
 import sqlalchemy as sa
-from flask_sqlalchemy import orm
+from flask_sqlalchemy import orm, SQLAlchemy
 from sqlalchemy import Index, or_, func
 from sqlalchemy.dialects.postgresql import TSVECTOR
-
-from flask_sqlalchemy import SQLAlchemy
+from flask_marshmallow import Marshmallow
+from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
 
 db = SQLAlchemy()
+ma = Marshmallow()
 
 
 class TSVector(sa.types.TypeDecorator):
     impl = TSVECTOR
 
 
+class Breed(db.Model):
+    __tablename__ = "breeds"
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(300))
+    kitties = orm.relationship("Kitty", back_populates="breed")
+
+    __ts_vector__ = db.Column(
+        TSVector(),
+        db.Computed("to_tsvector('russian', coalesce(name,''))", persisted=True),
+    )
+
+    __table_args__ = (
+        Index("ix_breed___ts_vector__", __ts_vector__, postgresql_using="gin"),
+    )
+
+    def __str__(self) -> str:
+        return f"{self.name}"
+
 class Kitty(db.Model):
     __tablename__ = "kitties"
 
     id = db.Column(db.Integer, primary_key=True)
     breed_id = db.Column(db.Integer, db.ForeignKey("breeds.id"))
-    name = db.Column(db.String(100))
-    description = db.Column(db.String(1000))
-    image = db.Column(db.String(100))
-    birthday = db.Column(db.DateTime())
+    name = db.Column(db.String(100), nullable=False)
+    description = db.Column(db.String(1000), nullable=False)
+    image = db.Column(db.String(100), nullable=False)
+    birthday = db.Column(db.Date(), nullable=False)
     breed = orm.relationship("Breed")
 
     __ts_vector__ = db.Column(
@@ -73,20 +90,17 @@ class Kitty(db.Model):
         return f"{self.name}"
 
 
-class Breed(db.Model):
-    __tablename__ = "breeds"
-    id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(300))
-    kitties = orm.relationship("Kitty", back_populates="breed")
+class KittySchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        fields = ('id', 'name', 'description', 'breed_id', 'image', 'birthday')
+        model = Kitty
+        include_fk = True
+        load_instance = True
 
-    __ts_vector__ = db.Column(
-        TSVector(),
-        db.Computed("to_tsvector('russian', coalesce(name,''))", persisted=True),
-    )
 
-    __table_args__ = (
-        Index("ix_breed___ts_vector__", __ts_vector__, postgresql_using="gin"),
-    )
-
-    def __str__(self) -> str:
-        return f"{self.name}"
+class BreedSchema(ma.SQLAlchemyAutoSchema):
+    class Meta:
+        fields = ('id', 'name', )
+        model = Breed
+        include_fk = True
+        load_instance = True

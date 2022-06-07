@@ -4,7 +4,7 @@ import os
 class Config(object):
     TESTING = False
     CSRF_ENABLED = True
-    DB_SERVER = "db"
+    DB_SERVER = "localhost"
     DB_USER = os.environ.get("DB_USER")
     DB_PASSWORD = os.environ.get("DB_PASSWORD")
     DB_NAME = os.environ.get("DB_NAME")
@@ -17,7 +17,8 @@ class Config(object):
     MAX_CONTENT_LENGTH = 5 * 1000 * 1000
     FLASK_ADMIN_SWATCH = "cerulean"
     BABEL_DEFAULT_LOCALE = "ru"
-    DEBUG = True
+    DEBUG = False
+    UPLOAD_FOLDER = 'static'
     # HOST_NAME_PORT = "127.0.0.1:3000"
     DEVELOPMENT = True
     FIXTURES_DIR = "fixtures"
