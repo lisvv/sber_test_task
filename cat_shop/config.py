@@ -17,7 +17,7 @@ class Config(object):
     MAX_CONTENT_LENGTH = 5 * 1000 * 1000
     FLASK_ADMIN_SWATCH = "cerulean"
     BABEL_DEFAULT_LOCALE = "ru"
-    DEBUG = False
+    DEBUG = True
     UPLOAD_FOLDER = 'static'
     # HOST_NAME_PORT = "127.0.0.1:3000"
     DEVELOPMENT = True

@@ -1,21 +1,24 @@
-from flask import request
-from db.models import Kitty, db
+from flask import request, abort
+from db.models import Kitty, db, Breed
 from werkzeug.utils import secure_filename
-from flask_restx import Resource, fields, reqparse
+from flask_restx import Resource, fields, reqparse, Namespace
 from flask import current_app
 import os
 from PIL import Image
-from api.urls import cats_ns, api
+from api.urls import api
+from werkzeug.datastructures import FileStorage
 
-parser = reqparse.RequestParser()
-parser.add_argument('rate', type=int, help='Rate cannot be converted')
-parser.add_argument('search')
+upload_parser = reqparse.RequestParser()
+upload_parser.add_argument('image', location='files',
+                           type=FileStorage, required=True, action="append")
+
+cats_ns = Namespace('cats', description='All about cats')
 
 
 class ImageLinkField(fields.Raw):
     def format(self, value):
         static = current_app.config["UPLOAD_FOLDER"]
-        return f"{api.base_url}/{static}/{value}"
+        return f"{api.base_url}{static}/{value}"
 
 
 get_cats = api.model('get_cats', {
@@ -38,9 +41,9 @@ post_cats = api.model('post_cats', {
 
 @cats_ns.route('/')
 class CatsList(Resource):
-    '''Shows a list of all todos, and lets you POST to add new tasks'''
-    @cats_ns.doc('cats_list')
+    @cats_ns.doc('cats_list', params={'search': {'description': 'Full text search'}})
     @cats_ns.marshal_list_with(get_cats)
+
     def get(self):
         cats = Kitty.query.all()
         searched_value = request.args.get("search")
@@ -53,7 +56,10 @@ class CatsList(Resource):
     @cats_ns.marshal_with(post_cats, code=201)
     def post(self):
         file = request.files.get('image')
-        filename = ""
+        data = request.json or request.values
+        breed = Breed.query.get(data.get("breed_id"))
+        if not breed:
+            abort(403, "Breed not found")
         if file:
             static_root = current_app.config['UPLOAD_FOLDER']
             filename = secure_filename(file.filename)
@@ -64,9 +70,11 @@ class CatsList(Resource):
             thumbnail_file = Image.open(os.path.join(static_root, filename))
             thumbnail_file.thumbnail((100, 100))
             thumbnail_file.save(os.path.join(static_root, f"{filename}_thumb.{ext}"))
-        image = {"image": filename}
-        data = request.values
-        new_cat = Kitty(**{**data, **image})
+            image = {"image": filename}
+            new_cat = Kitty(**{**data, **image})
+        else:
+            new_cat = Kitty(**data)
+        db.session.expunge_all()
         with db.session() as ses:
             ses.add(new_cat)
             ses.commit()
@@ -77,13 +85,11 @@ class CatsList(Resource):
 @cats_ns.response(404, 'Cat not found')
 @cats_ns.param('id', 'Cat identifier')
 class CatsDetail(Resource):
-    '''Shows a list of all todos, and lets you POST to add new tasks'''
     @cats_ns.doc('get_cat')
     @cats_ns.marshal_list_with(get_cats)
     def get(self, id):
         cat = Kitty.query.get_or_404(id)
         return cat, 200
-
 
     @cats_ns.doc('delete_todo')
     @cats_ns.response(204, 'Todo deleted')
@@ -118,4 +124,4 @@ class CatsDetail(Resource):
         with db.session() as ses:
             ses.add(cat)
             ses.commit()
-        return cat
+        return cat, 200
