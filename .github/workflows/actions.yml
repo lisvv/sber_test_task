@@ -43,7 +43,7 @@ jobs:
       PYTHONPATH: /home/runner/work/sber_test_task/sber_test_task/cat_shop/
       FLASK_APP: cat_shop
       DB_DRIVER: postgresql
-      DB_SERVER: postgres
+      DB_SERVER: localhost
       DB_USER: test_user
       DB_PASSWORD: password
       DB_NAME: test_db

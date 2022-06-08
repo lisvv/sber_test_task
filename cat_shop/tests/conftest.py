@@ -10,7 +10,6 @@ def app():
     app.config.update(
         {
             "TESTING": True,
-            "DB_SERVER": "localhost",
             "SQLALCHEMY_DATABASE_URI": "postgresql://test_user:password@localhost/test_db"
         }
     )
