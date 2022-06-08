@@ -1,4 +1,4 @@
 
 # sber_test_task
 Sber test task
-![.github/workflows/actions.yml](https://github.com/github/docs/actions/workflows/main.yml/badge.svg)
+[![Django CI](https://github.com/lisvv/test_task/actions/workflows/actions.yml/badge.svg?branch=main)](https://github.com/lisvv/test_task/actions/workflows/actions.yml)
