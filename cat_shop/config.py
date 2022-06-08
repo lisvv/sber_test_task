@@ -28,3 +28,10 @@ class Config(object):
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:  # Note: all caps
         return f"{self.DB_DRIVER}://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_SERVER}/{self.DB_NAME}"
+
+
+class TestConfig(Config):
+    DB_SERVER = "db"
+    DB_USER = "test_user"
+    DB_PASSWORD = "password"
+    DB_NAME = "test_db"

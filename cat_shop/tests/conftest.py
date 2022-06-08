@@ -1,5 +1,5 @@
 import pytest
-from config import Config
+from config import TestConfig
 from core.commands import load_fixtures
 from flask.testing import FlaskClient, FlaskCliRunner
 from cat_shop import create_app
@@ -8,7 +8,7 @@ from cat_shop import create_app
 @pytest.fixture()
 def app():
     app = create_app()
-    app.config.from_object(Config)
+    app.config.from_object(TestConfig)
     app.config.update(
         {
             "TESTING": True,
