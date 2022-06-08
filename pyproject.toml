@@ -5,7 +5,7 @@ description = "Sber cats test task"
 authors = ["lisvv <81390205+lisvv@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
-python = "^3.10"
+python = "^3.9"
 Flask = "^2.1.2"
 Flask-SQLAlchemy = "^2.5.1"
 Flask-Admin = "^1.6.0"
