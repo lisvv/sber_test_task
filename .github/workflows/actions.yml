@@ -44,9 +44,9 @@ jobs:
       FLASK_APP: cat_shop
       DB_DRIVER: postgresql
       DB_SERVER: localhost
-      DB_USER: test_user
-      DB_PASSWORD: password
-      DB_NAME: test_db
+      POSTGRES_USER: test_user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test_db
     strategy:
       max-parallel: 4
       matrix:
@@ -57,11 +57,6 @@ jobs:
     services:
       postgres:
         image: postgres:12.4
-        env:
-          POSTGRES_USER: test_user
-          POSTGRES_PASSWORD: password
-          POSTGRES_DB: test_db
-
         options: >-
           --health-cmd pg_isready
           --health-interval 10s

@@ -8,9 +8,9 @@ class Config(object):
     CSRF_ENABLED = True
     DB_DRIVER = os.environ.get("DB_DRIVER")
     DB_SERVER = os.environ.get("DB_SERVER")
-    DB_USER = os.environ.get("DB_USER")
-    DB_PASSWORD = os.environ.get("DB_PASSWORD")
-    DB_NAME = os.environ.get("DB_NAME")
+    DB_USER = os.environ.get("POSTGRES_USER")
+    DB_PASSWORD = os.environ.get("POSTGRES_PASSWORD")
+    DB_NAME = os.environ.get("POSTGRES_DB")
     MIGRATION_DIRECTORY = os.path.join(f"{PROJECT_ROOT}/db/migrations")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = os.environ.get("SECRET_KEY")
