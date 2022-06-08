@@ -3,16 +3,15 @@ import os
 
 class Config(object):
     APPLICATION_ROOT = "/cat_shop/"
-    WORK_DIR = os.path.dirname(os.path.realpath(__file__))
+    PROJECT_ROOT = os.path.dirname(os.path.realpath(__file__))
     TESTING = False
     CSRF_ENABLED = True
-    # DB_SERVER = "localhost"
     DB_DRIVER = os.environ.get("DB_DRIVER")
     DB_SERVER = os.environ.get("DB_SERVER")
     DB_USER = os.environ.get("DB_USER")
     DB_PASSWORD = os.environ.get("DB_PASSWORD")
     DB_NAME = os.environ.get("DB_NAME")
-    MIGRATION_DIRECTORY = os.path.join(f"{WORK_DIR}/db/migrations")
+    MIGRATION_DIRECTORY = os.path.join(f"{PROJECT_ROOT}/db/migrations")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = os.environ.get("SECRET_KEY")
     ALLOWED_EXTENSIONS = {"apng", "avif", "gif", "jpeg", "png", "svg", "webp"}
