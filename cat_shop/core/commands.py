@@ -5,13 +5,14 @@ from db import models
 from flask import current_app as flask_app
 from flask_migrate import Migrate
 from sqlalchemy import exists
-
+from config import TestConfig
 migrate = Migrate()
 
 
 def load_fixtures() -> None:
     db = models.db
     db.init_app(flask_app)
+    flask_app.config.update(TestConfig)
     fixtures_dir = flask_app.config.get("FIXTURES_DIR")
     fixtures_path = os.path.join(flask_app.root_path, fixtures_dir)
     fixtures = ("breeds.json", "kitties.json")
