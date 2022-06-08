@@ -8,7 +8,7 @@
 ```git clone https://github.com/lisvv/sber_test_task.git```
 
 2. Переименовываем файл с переменными окружения
-```.env.example -> .env```
+```mv .env.example .env```
 
 3. Переходим в папку cats_infra
 ```cd cats_infra```
