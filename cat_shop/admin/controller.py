@@ -15,9 +15,8 @@ from jinja2.runtime import Context
 from markupsafe import Markup
 from sqlalchemy import func, or_
 from sqlalchemy.orm import InstrumentedAttribute
-
 babel = Babel()
-admin = Admin()
+
 
 
 class BreedView(sqla.ModelView):
@@ -105,14 +104,11 @@ class KittyView(sqla.ModelView):
     def _breed(self, context: Context, model: Kitty, name: str) -> str:
         return model.breed.name
 
-    def _description(self, context: Context, model: Kitty, name: str) -> str:
-        return f"{model.description[:60]}..."
 
     column_formatters = {
         "image": _list_thumbnail,
         "birthday": _birthday_to_age,
         "breed": _breed,
-        "description": _description,
     }
 
     column_formatters_detail = ("name", "description")
@@ -144,5 +140,6 @@ class KittyView(sqla.ModelView):
         return "FTS, имя, порода, описание"
 
 
+admin = Admin(template_mode='bootstrap4')
 admin.add_view(KittyView(Kitty, db.session, "Котята"))
 admin.add_view(BreedView(Breed, db.session, "Порода"))

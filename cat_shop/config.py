@@ -8,10 +8,10 @@ class Config(object):
     CSRF_ENABLED = True
     # DB_SERVER = "localhost"
     DB_DRIVER = os.environ.get("DB_DRIVER")
-    DB_SERVER = os.environ.get("DB_DRIVER")
-    DB_USER = os.environ.get("DB_DRIVER")
-    DB_PASSWORD = os.environ.get("DB_DRIVER")
-    DB_NAME = os.environ.get("DB_DRIVER")
+    DB_SERVER = os.environ.get("DB_SERVER")
+    DB_USER = os.environ.get("DB_USER")
+    DB_PASSWORD = os.environ.get("DB_PASSWORD")
+    DB_NAME = os.environ.get("DB_NAME")
     MIGRATION_DIRECTORY = os.path.join(f"{WORK_DIR}/db/migrations")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = os.environ.get("SECRET_KEY")
