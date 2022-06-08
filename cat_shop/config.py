@@ -32,6 +32,7 @@ class Config(object):
 
 
 class TestConfig(Config):
+    DB_DRIVER = "postgresql"
     DB_SERVER = "db"
     DB_USER = "test_user"
     DB_PASSWORD = "password"
@@ -39,6 +40,7 @@ class TestConfig(Config):
 
 
 class ProdConfig(Config):
+    DB_DRIVER = "postgresql"
     DB_SERVER = "db"
     DB_USER = "test_user"
     DB_PASSWORD = "password"
