@@ -8,7 +8,7 @@ class Config(object):
     CSRF_ENABLED = True
     # DB_SERVER = "localhost"
     DB_DRIVER = "postgresql"
-    DB_SERVER = "db"
+    DB_SERVER = "postgres"
     DB_USER = "test_user"
     DB_PASSWORD = "password"
     DB_NAME = "test_db"
@@ -33,7 +33,7 @@ class Config(object):
 
 class TestConfig(Config):
     DB_DRIVER = "postgresql"
-    DB_SERVER = "db"
+    DB_SERVER = "postgres"
     DB_USER = "test_user"
     DB_PASSWORD = "password"
     DB_NAME = "test_db"
