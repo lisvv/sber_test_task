@@ -7,11 +7,11 @@ class Config(object):
     TESTING = False
     CSRF_ENABLED = True
     # DB_SERVER = "localhost"
-    DB_DRIVER = "postgresql"
-    DB_SERVER = "localhost"
-    DB_USER = "test_user"
-    DB_PASSWORD = "password"
-    DB_NAME = "test_db"
+    DB_DRIVER = os.environ.get("DB_DRIVER")
+    DB_SERVER = os.environ.get("DB_DRIVER")
+    DB_USER = os.environ.get("DB_DRIVER")
+    DB_PASSWORD = os.environ.get("DB_DRIVER")
+    DB_NAME = os.environ.get("DB_DRIVER")
     MIGRATION_DIRECTORY = os.path.join(f"{WORK_DIR}/db/migrations")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = os.environ.get("SECRET_KEY")
@@ -29,21 +29,3 @@ class Config(object):
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:  # Note: all caps
         return f"{self.DB_DRIVER}://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_SERVER}:5432/{self.DB_NAME}"
-
-
-class TestConfig(Config):
-    DB_DRIVER = "postgresql"
-    DB_SERVER = "postgres"
-    DB_USER = "test_user"
-    DB_PASSWORD = "password"
-    DB_NAME = "test_db"
-
-
-class ProdConfig(Config):
-    DB_DRIVER = "postgresql"
-    DB_SERVER = "db"
-    DB_USER = "test_user"
-    DB_PASSWORD = "password"
-    DB_NAME = "test_db"
-
-

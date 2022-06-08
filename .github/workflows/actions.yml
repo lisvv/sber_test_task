@@ -42,6 +42,11 @@ jobs:
     env:
       PYTHONPATH: /home/runner/work/test_task/test_task/cat_shop/
       FLASK_APP: cat_shop
+      DB_DRIVER: postgresql
+      DB_SERVER: postgres
+      DB_USER: test_user
+      DB_PASSWORD: password
+      DB_NAME: test_db
     strategy:
       max-parallel: 4
       matrix:

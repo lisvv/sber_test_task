@@ -5,7 +5,6 @@ from db import models
 from flask import current_app as flask_app
 from flask_migrate import Migrate
 from sqlalchemy import exists
-from config import TestConfig
 migrate = Migrate()
 
 
