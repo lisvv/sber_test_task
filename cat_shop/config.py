@@ -12,7 +12,7 @@ class Config(object):
     DB_NAME = os.environ.get("DB_NAME")
     DB_DRIVER = os.environ.get("DB_DRIVER")
     DB_PORT = os.environ.get("DB_PORT")
-    MIGRATION_DIRECTORY = os.path.join(WORK_DIR, "/db/migrations")
+    MIGRATION_DIRECTORY = os.path.join(f"{WORK_DIR}/db/migrations")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = os.environ.get("SECRET_KEY")
     ALLOWED_EXTENSIONS = {"apng", "avif", "gif", "jpeg", "png", "svg", "webp"}
