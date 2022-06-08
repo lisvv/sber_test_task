@@ -1,3 +1,3 @@
 from flask_restx import Api
 
-api = Api(doc='/docs/')
+api = Api(doc="/docs/")

@@ -1,7 +1,6 @@
 import sqlalchemy as sa
 from flask_marshmallow import Marshmallow
-from flask_sqlalchemy import SQLAlchemy, orm
-from marshmallow_sqlalchemy import SQLAlchemyAutoSchema
+from flask_sqlalchemy import BaseQuery, SQLAlchemy, orm
 from sqlalchemy import Index, func, or_
 from sqlalchemy.dialects.postgresql import TSVECTOR
 
@@ -58,7 +57,7 @@ class Kitty(db.Model):
     )
 
     @classmethod
-    def __plainto_tsquery(cls, value):
+    def __plainto_tsquery(cls, value: str) -> BaseQuery:
         return cls.query.join(Breed).filter(
             or_(
                 cls.__ts_vector__.op("@@")(func.plainto_tsquery("russian", value)),
@@ -67,14 +66,14 @@ class Kitty(db.Model):
         )
 
     @classmethod
-    def __to_tsquery(cls, value):
+    def __to_tsquery(cls, value: str) -> BaseQuery:
         value += ":*"
         return cls.query.join(Breed).filter(
             or_(cls.__ts_vector__.match(value), Breed.__ts_vector__.match(value))
         )
 
     @classmethod
-    def fulltext_search(cls, value) -> db.Query:
+    def fulltext_search(cls, value) -> BaseQuery:
         if len(value.split(" ")) > 1:
             query = cls.__plainto_tsquery(value)
         else:
@@ -85,22 +84,3 @@ class Kitty(db.Model):
 
     def __str__(self) -> str:
         return f"{self.name}"
-
-
-class KittySchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        fields = ("id", "name", "description", "breed_id", "image", "birthday")
-        model = Kitty
-        include_fk = True
-        load_instance = True
-
-
-class BreedSchema(ma.SQLAlchemyAutoSchema):
-    class Meta:
-        fields = (
-            "id",
-            "name",
-        )
-        model = Breed
-        include_fk = True
-        load_instance = True

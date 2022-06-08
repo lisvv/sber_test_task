@@ -2,10 +2,10 @@ import os
 
 
 class Config(object):
-    APPLICATION_ROOT = '/cat_shop/'
+    APPLICATION_ROOT = "/cat_shop/"
     TESTING = False
     CSRF_ENABLED = True
-    DB_SERVER = "db"
+    DB_SERVER = "localhost"
     DB_USER = os.environ.get("DB_USER")
     DB_PASSWORD = os.environ.get("DB_PASSWORD")
     DB_NAME = os.environ.get("DB_NAME")

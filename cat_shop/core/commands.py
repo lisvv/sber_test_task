@@ -1,16 +1,15 @@
 import json
 import os
 
+from db import models
 from flask import current_app as flask_app
 from flask_migrate import Migrate
 from sqlalchemy import exists
 
-from db import models
-
 migrate = Migrate()
 
 
-def load_fixtures():
+def load_fixtures() -> None:
     db = models.db
     db.init_app(flask_app)
     fixtures_dir = flask_app.config.get("FIXTURES_DIR")

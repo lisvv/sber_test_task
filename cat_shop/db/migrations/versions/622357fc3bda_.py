@@ -7,7 +7,6 @@ Create Date: 2022-06-07 18:45:31.651085
 """
 import sqlalchemy as sa
 from alembic import op
-
 from db.models import TSVector
 
 # revision identifiers, used by Alembic.

@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "sber_test_task"
 version = "0.1.0"
-description = ""
+description = "Sber cats test task"
 authors = ["lisvv <81390205+lisvv@users.noreply.github.com>"]
 
 [tool.poetry.dependencies]
@@ -18,15 +18,16 @@ python-dateutil = "^2.8.2"
 flask-whooshee = "^0.8.2"
 MarkupSafe = "^2.1.1"
 Pillow = "^9.1.1"
-black = "^22.3.0"
-isort = "^5.10.1"
 flask-restx = "^0.5.1"
 flask-marshmallow = "^0.14.0"
 marshmallow-sqlalchemy = "^0.28.0"
-pytest = "^7.1.2"
+
 gunicorn = "^20.1.0"
 
 [tool.poetry.dev-dependencies]
+black = "^22.3.0"
+isort = "^5.10.1"
+pytest = "^7.1.2"
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]

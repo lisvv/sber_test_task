@@ -1,13 +1,13 @@
 import os
+from typing import List, Tuple
 
+from api.urls import api
+from db.models import Breed, Kitty, db
 from flask import abort, current_app, request
 from flask_restx import Namespace, Resource, fields, reqparse
 from PIL import Image
 from werkzeug.datastructures import FileStorage
 from werkzeug.utils import secure_filename
-
-from api.urls import api
-from db.models import Breed, Kitty, db
 
 upload_parser = reqparse.RequestParser()
 upload_parser.add_argument(
@@ -18,7 +18,7 @@ cats_ns = Namespace("cats", description="All about cats")
 
 
 class ImageLinkField(fields.Raw):
-    def format(self, value):
+    def format(self, value: str) -> str:
         static = current_app.config["UPLOAD_FOLDER"]
         return f"{api.base_url}{static}/{value}"
 
@@ -51,7 +51,7 @@ post_cats = api.model(
 class CatsList(Resource):
     @cats_ns.doc("cats_list", params={"search": {"description": "Full text search"}})
     @cats_ns.marshal_list_with(get_cats)
-    def get(self):
+    def get(self) -> Tuple[List[Kitty], int]:
         cats = Kitty.query.all()
         searched_value = request.args.get("search")
         if searched_value:
@@ -61,7 +61,7 @@ class CatsList(Resource):
     @cats_ns.doc("create_cat")
     @cats_ns.expect(post_cats)
     @cats_ns.marshal_with(post_cats, code=201)
-    def post(self):
+    def post(self) -> Tuple[Kitty, int]:
         file = request.files.get("image")
         data = request.json or request.values
         breed = Breed.query.get(data.get("breed_id"))
@@ -92,7 +92,7 @@ class CatsList(Resource):
 class CatsDetail(Resource):
     @cats_ns.doc("get_cat")
     @cats_ns.marshal_list_with(get_cats)
-    def get(self, id):
+    def get(self, id: int) -> Tuple[Kitty, int]:
         cat = Kitty.query.get_or_404(id)
         return cat, 200
 
@@ -107,7 +107,7 @@ class CatsDetail(Resource):
 
     @cats_ns.expect(post_cats)
     @cats_ns.marshal_with(post_cats)
-    def patch(self, id):
+    def patch(self, id: int) -> Tuple[Kitty, int]:
         cat = Kitty.query.get_or_404(id)
         file = request.files.get("image")
         if file:

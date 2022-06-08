@@ -1,8 +1,8 @@
 import pytest
-
-from . import create_app
-from .config import Config
-from .core.commands import load_fixtures
+from config import Config
+from core.commands import load_fixtures
+from flask.testing import FlaskClient, FlaskCliRunner
+from cat_shop import create_app
 
 
 @pytest.fixture()
@@ -22,10 +22,10 @@ def app():
 
 
 @pytest.fixture()
-def client(app):
+def client(app) -> FlaskClient:
     return app.test_client()
 
 
 @pytest.fixture()
-def runner(app):
+def runner(app) -> FlaskCliRunner:
     return app.test_cli_runner()

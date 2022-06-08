@@ -1,17 +1,20 @@
 import datetime
+from typing import Union
 
+from core.normalizer import get_normalized_month
 from dateutil.relativedelta import relativedelta
+from db.models import Breed, Kitty, db
 from flask import url_for
 from flask_admin import Admin, form
 from flask_admin.babel import lazy_gettext
 from flask_admin.contrib import sqla
 from flask_admin.contrib.sqla import filters
 from flask_babelex import Babel
+from flask_sqlalchemy import BaseQuery
+from jinja2.runtime import Context
 from markupsafe import Markup
 from sqlalchemy import func, or_
-
-from core.normalizer import get_normalized_month
-from db.models import Breed, Kitty, db
+from sqlalchemy.orm import InstrumentedAttribute
 
 babel = Babel()
 admin = Admin()
@@ -22,14 +25,20 @@ class BreedView(sqla.ModelView):
 
 
 class AgeFilter(filters.BaseSQLAFilter):
-    def __init__(self, column, name, options=None, data_type=None):
+    def __init__(
+        self,
+        column: Union[InstrumentedAttribute, datetime.date],
+        name: str,
+        options: str = None,
+        data_type: str = None,
+    ) -> None:
         self.options = options
         super(AgeFilter, self).__init__(name, options, data_type)
 
         self.column = column
 
-    def get_options(self, view):
-        return [
+    def get_options(self, view: "KittyView") -> tuple[tuple[str, str], ...]:
+        return (
             ("1", "менее месяца"),
             ("2", "до 2 месяцев"),
             ("3", "до 3 месяцев"),
@@ -42,13 +51,13 @@ class AgeFilter(filters.BaseSQLAFilter):
             ("10", "до 10 месяцев"),
             ("11", "до 11 месяцев"),
             ("12", "год и более"),
-        ]
+        )
 
-    def apply(self, query, value: str, alias=None):
+    def apply(self, query: BaseQuery, value: str, alias=None) -> BaseQuery:
         searching_birthday = datetime.datetime.now() - relativedelta(months=int(value))
         return query.filter(Kitty.birthday >= searching_birthday)
 
-    def operation(self):
+    def operation(self) -> str:
         return lazy_gettext("Возраст")
 
 
@@ -61,12 +70,7 @@ class KittyView(sqla.ModelView):
             thumbnail_size=(500, 500, False),
         )
     }
-    form_widget_args = {
-        'description': {
-            'rows': 40,
-            'style': 'color: black'
-        }
-    }
+    form_widget_args = {"description": {"rows": 40, "style": "color: black"}}
     page_size = 5
     column_filters = (
         "name",
@@ -84,35 +88,43 @@ class KittyView(sqla.ModelView):
         birthday="Возраст",
     )
 
-
-    def _list_thumbnail(self, context, model, name):
+    def _list_thumbnail(
+        self, context: Context, model: Kitty, name: str
+    ) -> Markup or str:
         if not model.image:
             return ""
         image_url = url_for("static", filename=model.image)
         return Markup(f'<img src="{image_url}" width="250" height="250">')
 
-    def _birthday_to_age(self, context, model, name):
+    def _birthday_to_age(self, context: Context, model: Kitty, name: str) -> str:
         birthday = model.birthday
         age = relativedelta(dt1=datetime.datetime.now().date(), dt2=birthday)
         normalized_month = get_normalized_month(age.months + age.years * 12)
         return normalized_month
 
-    def _breed(self, context, model, name):
+    def _breed(self, context: Context, model: Kitty, name: str) -> str:
         return model.breed.name
 
-    def _description(self, context, model, name):
+    def _description(self, context: Context, model: Kitty, name: str) -> str:
         return f"{model.description[:60]}..."
 
     column_formatters = {
         "image": _list_thumbnail,
         "birthday": _birthday_to_age,
         "breed": _breed,
-        "description": _description
+        "description": _description,
     }
 
     column_formatters_detail = ("name", "description")
 
-    def _apply_search(self, query, count_query, joins, count_joins, search):
+    def _apply_search(
+        self,
+        query: BaseQuery,
+        count_query: BaseQuery,
+        joins: dict,
+        count_joins: dict,
+        search: str,
+    ):
         if not search:
             return super(KittyView, self)._apply_search(
                 query, count_query, joins, count_joins, search
@@ -128,7 +140,7 @@ class KittyView(sqla.ModelView):
 
         return query, count_query, joins, count_joins
 
-    def search_placeholder(self):
+    def search_placeholder(self) -> str:
         return "FTS, имя, порода, описание"
 
 

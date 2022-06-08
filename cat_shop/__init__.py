@@ -1,6 +1,3 @@
-from flask import Flask
-from werkzeug.middleware.proxy_fix import ProxyFix
-
 from admin.controller import admin, babel
 from api.breeds import breed_ns
 from api.cats import cats_ns
@@ -10,6 +7,8 @@ from config import Config
 from core import commands
 from core.commands import migrate
 from db.models import db, ma
+from flask import Flask
+from werkzeug.middleware.proxy_fix import ProxyFix
 
 
 def create_app():
@@ -18,9 +17,13 @@ def create_app():
 
     db.init_app(flask_app)
     ma.init_app(flask_app)
-    flask_app.route('/')(index_page)
+    flask_app.route("/")(index_page)
     api.init_app(
-        flask_app, version="1.0", title="Cats API", description="Cats API for Sber", doc='/docs'
+        flask_app,
+        version="1.0",
+        title="Cats API",
+        description="Cats API for Sber",
+        doc="/docs",
     )
     babel.init_app(flask_app)
     admin.init_app(flask_app)
@@ -32,11 +35,10 @@ def create_app():
 
     flask_app.wsgi_app = ProxyFix(flask_app.wsgi_app)
 
-
     api.add_namespace(cats_ns)
     api.add_namespace(breed_ns)
 
-
     return flask_app
+
 
 application = create_app()
