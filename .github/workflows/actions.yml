@@ -31,7 +31,7 @@ jobs:
         with:
           push: true
           file: Dockerfile
-          tags: cr.yandex/${{ secrets.REGISTRY_ID }}/student-diary-backend-preprod:${{ github.run_id }}
+          tags: cr.yandex/${{ secrets.REGISTRY_ID }}/sber-test-task:${{ github.run_id }}
           build-args: |
             GITHUB_SHA=${{ github.sha }}
             JOB_ID=${{ github.run_id }}
@@ -40,7 +40,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      PYTHONPATH: /home/runner/work/test_task/test_task/cat_shop/
+      PYTHONPATH: /home/runner/work/test_task/sber_test_task/cat_shop/
       FLASK_APP: cat_shop
       DB_DRIVER: postgresql
       DB_SERVER: postgres
