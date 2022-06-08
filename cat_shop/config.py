@@ -3,6 +3,7 @@ import os
 
 class Config(object):
     APPLICATION_ROOT = "/cat_shop/"
+    WORK_DIR = os.path.dirname(os.path.realpath(__file__))
     TESTING = False
     CSRF_ENABLED = True
     DB_SERVER = "localhost"
@@ -11,7 +12,7 @@ class Config(object):
     DB_NAME = os.environ.get("DB_NAME")
     DB_DRIVER = os.environ.get("DB_DRIVER")
     DB_PORT = os.environ.get("DB_PORT")
-    MIGRATION_DIRECTORY = os.path.join("./cat_shop/db/migrations")
+    MIGRATION_DIRECTORY = os.path.join(WORK_DIR, "/db/migrations")
     SQLALCHEMY_TRACK_MODIFICATIONS = True
     SECRET_KEY = os.environ.get("SECRET_KEY")
     ALLOWED_EXTENSIONS = {"apng", "avif", "gif", "jpeg", "png", "svg", "webp"}
@@ -31,7 +32,6 @@ class Config(object):
 
 
 class TestConfig(Config):
-    MIGRATION_DIRECTORY = os.path.join("./cat_shop/db/migrations")
     DB_SERVER = "db"
     DB_USER = "test_user"
     DB_PASSWORD = "password"
@@ -43,6 +43,5 @@ class ProdConfig(Config):
     DB_USER = "test_user"
     DB_PASSWORD = "password"
     DB_NAME = "test_db"
-    MIGRATION_DIRECTORY = os.path.join("./cat_shop/db/migrations")
 
 
