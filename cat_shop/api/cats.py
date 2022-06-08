@@ -75,7 +75,7 @@ class CatsList(Resource):
             file.save(os.path.join(static_root, filename))
             file.close()
             thumbnail_file = Image.open(os.path.join(static_root, filename))
-            thumbnail_file.thumbnail((100, 100))
+            thumbnail_file.thumbnail((500, 500))
             thumbnail_file.save(os.path.join(static_root, f"{filename}_thumb.{ext}"))
             image = {"image": filename}
             new_cat = Kitty(**{**data, **image})

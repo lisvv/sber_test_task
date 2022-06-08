@@ -65,13 +65,14 @@ class KittyView(sqla.ModelView):
         "image": form.ImageUploadField(
             "Фото",
             base_path="static",
-            max_size=(500, 500, False),
-            thumbnail_size=(500, 500, False),
+            max_size=(500, 500, True),
+            thumbnail_size=(500, 500, True),
         )
     }
     form_widget_args = {"description": {"rows": 40, "style": "color: black"}}
     page_size = 5
     column_filters = (
+        "breed",
         "name",
         "description",
         AgeFilter(column=Kitty.birthday, name="возраст до", options="Возраст"),
@@ -81,7 +82,7 @@ class KittyView(sqla.ModelView):
     column_list = ("breed", "name", "birthday", "image", "description")
     column_labels = dict(
         breed="Порода",
-        name="Кличка",
+        name="Имя",
         description="Описание",
         image="Фото",
         birthday="Возраст",
