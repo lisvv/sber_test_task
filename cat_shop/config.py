@@ -31,7 +31,9 @@ class Config(object):
 
 
 class TestConfig(Config):
+    MIGRATION_DIRECTORY = os.path.join("/home/runner/work/test_task/test_task/cat_shop/db/migrations")
     DB_SERVER = "db"
     DB_USER = "test_user"
     DB_PASSWORD = "password"
     DB_NAME = "test_db"
+
