@@ -2,13 +2,13 @@ name: Django CI
 
 on:
   push:
-    branches: [ master ]
+    branches: [ main ]
 
 
 jobs:
 
   build_and_push_prod_to_yandex_registry:
-    if: github.ref == 'refs/heads/master'
+    if: github.ref == 'refs/heads/main'
     needs: [test]
     uses: students-diary/students-diary-workflow-actions/.github/workflows/build-and-push-diary.yaml@master
     secrets:
@@ -71,4 +71,4 @@ jobs:
     - name: Run Tests
       run: |
         cd backend
-        python manage.py test
+        python3 -m pytest

@@ -98,7 +98,7 @@ class CatsDetail(Resource):
 
     @cats_ns.doc("delete_todo")
     @cats_ns.response(204, "Todo deleted")
-    def delete(self, id):
+    def delete(self, id: int) -> Tuple[str, int]:
         cat = Kitty.query.get_or_404(id)
         with db.session() as ses:
             ses.delete(cat)

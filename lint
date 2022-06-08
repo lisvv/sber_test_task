@@ -4,7 +4,7 @@ HAS_ERRORS=0
 LINT_EXCLUDE_PATTERN="migrations"
 
 # -vE - is invert-match + extended-regexp
-for FILEPATH in $(git diff --name-only origin/master HEAD -- | grep "^cat_shop/.*\.py$" | grep -vE "$LINT_EXCLUDE_PATTERN"); do
+for FILEPATH in $(git diff --name-only origin/main HEAD -- | grep "^cat_shop/.*\.py$" | grep -vE "$LINT_EXCLUDE_PATTERN"); do
     # skip file if it was deleted
     [ ! -f "$FILEPATH" ] && continue
     # for debug purposes
