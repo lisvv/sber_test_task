@@ -52,15 +52,6 @@ def test_post_cats(client: FlaskClient, app) -> None:
     assert new_cat.birthday == datetime.datetime.strptime(cat.get("birthday"), "%Y-%m-%d").date()
 
 
-def test_delete_cat(client: FlaskClient, app) -> None:
-    with app.app_context():
-        kitty_count = db.session.query(Kitty).count()
-    client.delete("/cats/1")
-    with app.app_context():
-        kitty_after_response = db.session.query(Kitty).count()
-    assert kitty_after_response == kitty_count - 1
-
-
 def test_delete_breed(client: FlaskClient, app) -> None:
     with app.app_context():
         breed_count = db.session.query(Breed).count()
@@ -81,7 +72,6 @@ def test_delete_cat(client: FlaskClient, app) -> None:
 
 def test_patch_breed(client: FlaskClient, app) -> None:
     breed_id = 2
-    new_breed_name = "new_breed_name"
     with app.app_context():
         old_breed = db.session.query(Breed).filter_by(id=breed_id).first()
     new_breed_name = f"{old_breed.name}_update"
