@@ -15,8 +15,8 @@
   "fields": {
     "id": 2,
     "breed_id": 2,
-    "name": "Дастик",
-    "description": "Мой кот",
+    "name": "Британец",
+    "description": "Маленькое описание",
     "image": "cat5.jpg",
     "birthday": "2022-04-02"
   }
