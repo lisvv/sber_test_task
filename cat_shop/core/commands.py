@@ -10,7 +10,6 @@ migrate = Migrate()
 
 
 def load_fixtures() -> None:
-    flask_app.config.update(TestConfig)
     db = models.db
     db.init_app(flask_app)
     fixtures_dir = flask_app.config.get("FIXTURES_DIR")
