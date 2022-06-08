@@ -15,6 +15,7 @@ services:
   back:
     build: ..
     command: sh -c "poetry run flask db upgrade && poetry run flask load-fixtures && poetry run gunicorn --bind 0.0.0.0:3000 cat_shop:application"
+    restart: always
     volumes:
       - ../static/:/code/static/
     expose:
