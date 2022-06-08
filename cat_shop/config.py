@@ -5,7 +5,7 @@ class Config(object):
     APPLICATION_ROOT = "/cat_shop/"
     TESTING = False
     CSRF_ENABLED = True
-    DB_SERVER = "db"
+    DB_SERVER = "localhost"
     DB_USER = os.environ.get("DB_USER")
     DB_PASSWORD = os.environ.get("DB_PASSWORD")
     DB_NAME = os.environ.get("DB_NAME")
@@ -36,4 +36,13 @@ class TestConfig(Config):
     DB_USER = "test_user"
     DB_PASSWORD = "password"
     DB_NAME = "test_db"
+
+
+class ProdConfig(Config):
+    DB_SERVER = "db"
+    DB_USER = "test_user"
+    DB_PASSWORD = "password"
+    DB_NAME = "test_db"
+    MIGRATION_DIRECTORY = os.path.join("/code/cat_shop/db/migrations")
+
 
