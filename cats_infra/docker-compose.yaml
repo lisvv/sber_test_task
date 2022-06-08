@@ -11,16 +11,16 @@ services:
       POSTGRES_PASSWORD: ${DB_PASSWORD}
       POSTGRES_DB: ${DB_NAME}
 
-    ports:
-    - "5432:5432"
-
   back:
     build: ..
-    command: sh -c "poetry run python3 app.py"
+    command: sh -c "poetry run flask db upgrade && poetry run flask load-fixtures && poetry run gunicorn --bind 0.0.0.0:3000 cat_shop:application"
     volumes:
-      - ../cat_shop/static/:/code/cat_shop/static/
+      - ../static/:/code/static/
     ports:
       - "3000:3000"
+    environment:
+      - FLASK_APP=cat_shop
+      - PYTHONPATH=/code/cat_shop/
     env_file:
       - .env
     depends_on:
@@ -31,7 +31,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ../static/:/usr/share/nginx/html/static/
+      - ../static/:/usr/share/nginx/html/static
       - ./nginx.conf:/etc/nginx/conf.d/default.conf
     restart: always
     depends_on:

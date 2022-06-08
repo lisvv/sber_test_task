@@ -1,15 +1,16 @@
-from flask import request, abort
-from db.models import Kitty, db, Breed
-from flask_restx import Resource, fields, reqparse, Namespace
-from flask import current_app
-from api.urls import api
+from flask import abort, current_app, request
+from flask_restx import Namespace, Resource, fields, reqparse
 from werkzeug.datastructures import FileStorage
 
-upload_parser = reqparse.RequestParser()
-upload_parser.add_argument('image', location='files',
-                           type=FileStorage, required=True, action="append")
+from api.urls import api
+from db.models import Breed, Kitty, db
 
-breed_ns = Namespace('breed', description='Breeds')
+upload_parser = reqparse.RequestParser()
+upload_parser.add_argument(
+    "image", location="files", type=FileStorage, required=True, action="append"
+)
+
+breed_ns = Namespace("breed", description="Breeds")
 
 
 class ImageLinkField(fields.Raw):
@@ -18,53 +19,55 @@ class ImageLinkField(fields.Raw):
         return f"{api.base_url}{static}/{value}"
 
 
-breed = api.model('get_breed', {
-    'id': fields.Integer(readonly=True, description='Breed unique identifier'),
-    'name': fields.String(required=True, description='Breed name')
-})
+breed = api.model(
+    "get_breed",
+    {
+        "id": fields.Integer(readonly=True, description="Breed unique identifier"),
+        "name": fields.String(required=True, description="Breed name"),
+    },
+)
 
 
-@breed_ns.route('/')
+@breed_ns.route("/")
 class CatsList(Resource):
-    @breed_ns.doc('breed_list')
+    @breed_ns.doc("breed_list")
     @breed_ns.marshal_list_with(breed)
     def get(self):
-        cats = Kitty.query.all()
+        cats = Breed.query.all()
         searched_value = request.args.get("search")
         if searched_value:
             cats = Kitty.fulltext_search(searched_value).all()
         return cats, 200
 
-    @breed_ns.doc('create_cat')
+    @breed_ns.doc("create_cat")
     @breed_ns.expect(breed)
     @breed_ns.marshal_with(breed, code=201)
     def post(self):
         data = request.json
         new_breed = Breed(**data)
-        with db.session() as ses:
-            ses.add(new_breed)
-            ses.commit()
+        db.session.add(new_breed)
+        db.session.commit()
         return new_breed, 201
 
 
-@breed_ns.route('/<int:id>')
-@breed_ns.response(404, 'Cat not found')
-@breed_ns.param('id', 'Breed identifier')
+@breed_ns.route("/<int:id>")
+@breed_ns.response(404, "Cat not found")
+@breed_ns.param("id", "Breed identifier")
 class CatsDetail(Resource):
-    @breed_ns.doc('get_breed')
+    @breed_ns.doc("get_breed")
     @breed_ns.marshal_list_with(breed)
     def get(self, id):
         breed = Breed.query.get_or_404(id)
         return breed, 200
 
-    @breed_ns.doc('delete_breed')
-    @breed_ns.response(204, 'Breed deleted')
+    @breed_ns.doc("delete_breed")
+    @breed_ns.response(204, "Breed deleted")
     def delete(self, id):
         cat = Breed.query.get_or_404(id)
         with db.session() as ses:
             ses.delete(cat)
             ses.commit()
-        return '', 204
+        return "", 204
 
     @breed_ns.expect(breed)
     @breed_ns.marshal_with(breed)
@@ -72,8 +75,5 @@ class CatsDetail(Resource):
         breed = Breed.query.get_or_404(id)
         for key, value in request.json.items():
             setattr(breed, key, value)
-        with db.session() as ses:
-            ses.query(Breed).filter(id=id).first()
-            ses.add(breed)
-            ses.commit()
+        db.session.commit()
         return breed, 200

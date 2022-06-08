@@ -1,18 +1,20 @@
-from flask import request, abort
-from db.models import Kitty, db, Breed
-from werkzeug.utils import secure_filename
-from flask_restx import Resource, fields, reqparse, Namespace
-from flask import current_app
 import os
+
+from flask import abort, current_app, request
+from flask_restx import Namespace, Resource, fields, reqparse
 from PIL import Image
-from api.urls import api
 from werkzeug.datastructures import FileStorage
+from werkzeug.utils import secure_filename
+
+from api.urls import api
+from db.models import Breed, Kitty, db
 
 upload_parser = reqparse.RequestParser()
-upload_parser.add_argument('image', location='files',
-                           type=FileStorage, required=True, action="append")
+upload_parser.add_argument(
+    "image", location="files", type=FileStorage, required=True, action="append"
+)
 
-cats_ns = Namespace('cats', description='All about cats')
+cats_ns = Namespace("cats", description="All about cats")
 
 
 class ImageLinkField(fields.Raw):
@@ -21,29 +23,34 @@ class ImageLinkField(fields.Raw):
         return f"{api.base_url}{static}/{value}"
 
 
-get_cats = api.model('get_cats', {
-    'id': fields.Integer(readonly=True, description='Cat unique identifier'),
-    'name': fields.String(required=True, description='Cat detail'),
-    'description': fields.String(required=True, description='Cat description'),
-    'image': ImageLinkField(required=True, description='Cat photo'),
-    'breed_id': fields.Integer(required=True, description='Breed identifier'),
-    'birthday': fields.Date(requred=True, description='Brithday')
-})
+get_cats = api.model(
+    "get_cats",
+    {
+        "id": fields.Integer(readonly=True, description="Cat unique identifier"),
+        "name": fields.String(required=True, description="Cat detail"),
+        "description": fields.String(required=True, description="Cat description"),
+        "image": ImageLinkField(required=True, description="Cat photo"),
+        "breed_id": fields.Integer(required=True, description="Breed identifier"),
+        "birthday": fields.Date(requred=True, description="Brithday"),
+    },
+)
 
-post_cats = api.model('post_cats', {
-    'id': fields.Integer(readonly=True, description='Cat unique identifier'),
-    'name': fields.String(required=True, description='Cat detail'),
-    'description': fields.String(required=True, description='Cat description'),
-    'breed_id': fields.Integer(required=True, description='Breed identifier'),
-    'birthday': fields.Date(requred=True, description='Brithday')
-})
+post_cats = api.model(
+    "post_cats",
+    {
+        "id": fields.Integer(readonly=True, description="Cat unique identifier"),
+        "name": fields.String(required=True, description="Cat detail"),
+        "description": fields.String(required=True, description="Cat description"),
+        "breed_id": fields.Integer(required=True, description="Breed identifier"),
+        "birthday": fields.Date(requred=True, description="Brithday"),
+    },
+)
 
 
-@cats_ns.route('/')
+@cats_ns.route("/")
 class CatsList(Resource):
-    @cats_ns.doc('cats_list', params={'search': {'description': 'Full text search'}})
+    @cats_ns.doc("cats_list", params={"search": {"description": "Full text search"}})
     @cats_ns.marshal_list_with(get_cats)
-
     def get(self):
         cats = Kitty.query.all()
         searched_value = request.args.get("search")
@@ -51,19 +58,19 @@ class CatsList(Resource):
             cats = Kitty.fulltext_search(searched_value).all()
         return cats, 200
 
-    @cats_ns.doc('create_cat')
+    @cats_ns.doc("create_cat")
     @cats_ns.expect(post_cats)
     @cats_ns.marshal_with(post_cats, code=201)
     def post(self):
-        file = request.files.get('image')
+        file = request.files.get("image")
         data = request.json or request.values
         breed = Breed.query.get(data.get("breed_id"))
         if not breed:
             abort(403, "Breed not found")
         if file:
-            static_root = current_app.config['UPLOAD_FOLDER']
+            static_root = current_app.config["UPLOAD_FOLDER"]
             filename = secure_filename(file.filename)
-            ext = filename.split('.')
+            ext = filename.split(".")
             name, ext = ext if len(ext) > 1 else ext
             file.save(os.path.join(static_root, filename))
             file.close()
@@ -74,41 +81,39 @@ class CatsList(Resource):
             new_cat = Kitty(**{**data, **image})
         else:
             new_cat = Kitty(**data)
-        db.session.expunge_all()
-        with db.session() as ses:
-            ses.add(new_cat)
-            ses.commit()
+        db.session.add(new_cat)
+        db.session.commit()
         return new_cat, 201
 
 
-@cats_ns.route('/<int:id>')
-@cats_ns.response(404, 'Cat not found')
-@cats_ns.param('id', 'Cat identifier')
+@cats_ns.route("/<int:id>")
+@cats_ns.response(404, "Cat not found")
+@cats_ns.param("id", "Cat identifier")
 class CatsDetail(Resource):
-    @cats_ns.doc('get_cat')
+    @cats_ns.doc("get_cat")
     @cats_ns.marshal_list_with(get_cats)
     def get(self, id):
         cat = Kitty.query.get_or_404(id)
         return cat, 200
 
-    @cats_ns.doc('delete_todo')
-    @cats_ns.response(204, 'Todo deleted')
+    @cats_ns.doc("delete_todo")
+    @cats_ns.response(204, "Todo deleted")
     def delete(self, id):
         cat = Kitty.query.get_or_404(id)
         with db.session() as ses:
             ses.delete(cat)
             ses.commit()
-        return '', 204
+        return "", 204
 
     @cats_ns.expect(post_cats)
     @cats_ns.marshal_with(post_cats)
     def patch(self, id):
         cat = Kitty.query.get_or_404(id)
-        file = request.files.get('image')
+        file = request.files.get("image")
         if file:
-            static_root = current_app.config['UPLOAD_FOLDER']
+            static_root = current_app.config["UPLOAD_FOLDER"]
             filename = secure_filename(file.filename)
-            ext = filename.split('.')
+            ext = filename.split(".")
             name, ext = ext if len(ext) > 1 else ext
             file.save(os.path.join(static_root, filename))
             file.close()
@@ -121,7 +126,5 @@ class CatsDetail(Resource):
         else:
             for key, value in request.json.items():
                 setattr(cat, key, value)
-        with db.session() as ses:
-            ses.add(cat)
-            ses.commit()
+            db.session.commit()
         return cat, 200

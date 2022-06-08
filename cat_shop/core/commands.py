@@ -29,4 +29,11 @@ def load_fixtures():
             if not instance:
                 new_instanace = model(**fields)
                 db.session.add(new_instanace)
-        db.session.commit()
+                db.session.commit()
+    db.session.execute(
+        "SELECT setval('kitties_id_seq', (SELECT MAX(id) FROM kitties) + 1)"
+    )
+    db.session.execute(
+        "SELECT setval('breeds_id_seq', (SELECT MAX(id) FROM breeds) + 1)"
+    )
+    db.session.commit()
