@@ -83,5 +83,4 @@ jobs:
     - name: Run Tests
       run: |
         cd cat_shop
-        PYTHONPATH=$$PWD
         poetry run pytest
