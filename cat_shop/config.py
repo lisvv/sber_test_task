@@ -8,7 +8,7 @@ class Config(object):
     CSRF_ENABLED = True
     # DB_SERVER = "localhost"
     DB_DRIVER = "postgresql"
-    DB_SERVER = "postgres"
+    DB_SERVER = "localhost"
     DB_USER = "test_user"
     DB_PASSWORD = "password"
     DB_NAME = "test_db"
@@ -28,7 +28,7 @@ class Config(object):
 
     @property
     def SQLALCHEMY_DATABASE_URI(self) -> str:  # Note: all caps
-        return f"{self.DB_DRIVER}://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_SERVER}/{self.DB_NAME}"
+        return f"{self.DB_DRIVER}://{self.DB_USER}:{self.DB_PASSWORD}@{self.DB_SERVER}:5432/{self.DB_NAME}"
 
 
 class TestConfig(Config):
