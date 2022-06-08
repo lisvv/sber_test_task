@@ -83,4 +83,6 @@ jobs:
     - name: Run Tests
       run: |
         cd cat_shop
+        poetry run flask db upgrade
+        poetry run flask load-fixtures
         poetry run pytest
