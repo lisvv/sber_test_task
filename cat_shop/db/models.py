@@ -1,11 +1,9 @@
 import sqlalchemy as sa
-from flask_marshmallow import Marshmallow
 from flask_sqlalchemy import BaseQuery, SQLAlchemy, orm
 from sqlalchemy import Index, func, or_
 from sqlalchemy.dialects.postgresql import TSVECTOR
 
 db = SQLAlchemy()
-ma = Marshmallow()
 
 
 class TSVector(sa.types.TypeDecorator):

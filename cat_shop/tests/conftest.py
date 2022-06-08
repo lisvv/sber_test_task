@@ -2,7 +2,7 @@ import pytest
 from config import TestConfig
 from core.commands import load_fixtures
 from flask.testing import FlaskClient, FlaskCliRunner
-from cat_shop import create_app
+from __init__ import create_app
 
 
 @pytest.fixture()

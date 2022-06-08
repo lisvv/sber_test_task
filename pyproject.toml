@@ -19,8 +19,6 @@ flask-whooshee = "^0.8.2"
 MarkupSafe = "^2.1.1"
 Pillow = "^9.1.1"
 flask-restx = "^0.5.1"
-flask-marshmallow = "^0.14.0"
-marshmallow-sqlalchemy = "^0.28.0"
 
 gunicorn = "^20.1.0"
 pytest = "^7.1.2"

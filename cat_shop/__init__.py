@@ -6,7 +6,7 @@ from api.urls import api
 from config import Config
 from core import commands
 from core.commands import migrate
-from db.models import db, ma
+from db.models import db
 from flask import Flask
 from werkzeug.middleware.proxy_fix import ProxyFix
 
@@ -16,7 +16,6 @@ def create_app():
     flask_app.config.from_object(Config())
 
     db.init_app(flask_app)
-    ma.init_app(flask_app)
     flask_app.route("/")(index_page)
     api.init_app(
         flask_app,
