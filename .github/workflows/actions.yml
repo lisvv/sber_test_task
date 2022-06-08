@@ -40,7 +40,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      PYTHONPATH: /home/runner/work/test_task/sber_test_task/cat_shop/
+      PYTHONPATH: /home/runner/work/sber_test_task/sber_test_task/cat_shop/
       FLASK_APP: cat_shop
       DB_DRIVER: postgresql
       DB_SERVER: postgres
