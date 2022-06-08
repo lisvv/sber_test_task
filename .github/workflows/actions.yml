@@ -40,7 +40,7 @@ jobs:
 
     runs-on: ubuntu-latest
     env:
-      PYTHONPATH: ./cat_shop/
+      PYTHONPATH: /home/runner/work/test_task/test_task/cat_shop/
     strategy:
       max-parallel: 4
       matrix:
