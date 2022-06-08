@@ -80,4 +80,4 @@ jobs:
         git fetch origin
     - name: Run Tests
       run: |
-        poetry run -m pytest
+        poetry run pytest
