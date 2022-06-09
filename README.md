@@ -7,8 +7,8 @@
 1. Колонируем репозиторий: 
 ```git clone https://github.com/lisvv/sber_test_task.git```
 
-2. Переходим в папку с проектом
-```cd sbet_test_task```
+2. Переходим в папку с инфраструктурой проекта
+```cd sber_test_task/cats_infra/```
 
 5. Переходим в папку cats_infra
 ```cd cats_infra```
