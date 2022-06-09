@@ -9,7 +9,7 @@ services:
     ports:
       - "5432:5432"
     env_file:
-      - ../.env
+      - ../.env.example
 
 
   back:
@@ -24,7 +24,7 @@ services:
       - FLASK_APP=cat_shop
       - PYTHONPATH=/code/cat_shop/
     env_file:
-      - ../.env
+      - ../.env.example
     depends_on:
       - db
 
